@@ -84,6 +84,8 @@
   <XML>
     <FormatSettings />
   </XML>
+  <FileHeader Region="Copyright &amp; License"><![CDATA[// Copyright (C) 2011 by Alex Lyman
+// RobotBattle.Automation is licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php]]></FileHeader>
   <GenerateMemberBody />
   <Naming2>
     <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>

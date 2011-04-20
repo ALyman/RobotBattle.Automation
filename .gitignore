@@ -27,7 +27,6 @@ obj/
 #Ignore files from extensions
 [Rr]elease*/
 _ReSharper*/
-*.ReSharper
 [Tt]est[Rr]esult*
 NDependOut
 StyleCop.Cache
