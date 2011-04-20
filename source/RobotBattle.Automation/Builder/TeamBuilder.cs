@@ -6,20 +6,22 @@ using System.Xml.Linq;
 
 namespace RobotBattle.Automation
 {
-	public class TeamBuilder
-	{
-		public TeamBuilder()
-		{
-			Robots = new Collection<RobotBuilder>();
-		}
+    public class TeamBuilder
+    {
+        public TeamBuilder()
+        {
+            Robots = new Collection<RobotBuilder>();
+        }
 
-		public ICollection<RobotBuilder> Robots { get; private set; }
+        public ICollection<RobotBuilder> Robots { get; private set; }
 
-		public XElement ToXml()
-		{
-			return new XElement(MatchBuilder.Namespace + "team",
-			                    from robot in Robots
-			                    select robot.ToXml());
-		}
-	}
+        public XElement ToXml()
+        {
+            return new XElement(
+                MatchBuilder.Namespace + "team",
+                from robot in Robots
+                select robot.ToXml()
+                );
+        }
+    }
 }
