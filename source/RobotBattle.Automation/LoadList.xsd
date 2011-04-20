@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="listschema" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="listschema" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="team">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="robot" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="file" type="xs:string" msdata:Ordinal="5" />
+                  </xs:sequence>
+                  <xs:attribute name="color" type="xs:string" />
+                  <xs:attribute name="style" type="xs:string" />
+                  <xs:attribute name="xpos" type="xs:double" />
+                  <xs:attribute name="ypos" type="xs:double" />
+                  <xs:attribute name="heading" type="xs:short" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" />
+            <xs:attribute name="color" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="match">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="mine" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="xpos" type="xs:double" />
+                  <xs:attribute name="ypos" type="xs:double" />
+                  <xs:attribute name="heading" type="xs:short" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="cookie" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="xpos" type="xs:double" />
+                  <xs:attribute name="ypos" type="xs:double" />
+                  <xs:attribute name="heading" type="xs:short" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="games" type="xs:unsignedInt" />
+            <xs:attribute name="width" type="xs:unsignedShort" />
+            <xs:attribute name="height" type="xs:unsignedShort" />
+            <xs:attribute name="zerostartheading" type="xs:boolean" />
+            <xs:attribute name="newstartpos" type="xs:boolean" />
+            <xs:attribute name="startenergy" type="xs:unsignedInt" />
+            <xs:attribute name="ceasefire" type="xs:unsignedInt" />
+            <xs:attribute name="name" type="xs:string" />
+            <xs:attribute name="color" type="xs:string" />
+            <xs:attribute name="compat">
+              <xs:simpleType>
+                <xs:restriction base="xs:string" />
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="turnmode" type="xs:unsignedShort" />
+            <xs:attribute name="radarrange" type="xs:int" />
+            <xs:attribute name="missilerange" type="xs:int" />
+            <xs:attribute name="allowsliding" type="xs:boolean" />
+            <xs:attribute name="fastmissiles" type="xs:boolean" />
+            <xs:attribute name="decelstops" type="xs:boolean" />
+            <xs:attribute name="updatedaccel" type="xs:boolean" />
+            <xs:attribute name="additiverotation" type="xs:boolean" />
+            <xs:attribute name="allowradio" type="xs:boolean" />
+            <xs:attribute name="timeout" type="xs:int" />
+            <xs:attribute name="cmrate" type="xs:int" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

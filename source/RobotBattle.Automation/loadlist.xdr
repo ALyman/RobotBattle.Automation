@@ -1,0 +1,94 @@
+<?xml version="1.0" ?> 
+<Schema name="listschema" xmlns="urn:schemas-microsoft-com:xml-data" xmlns:dt="urn:schemas-microsoft-com:datatypes">
+<AttributeType name="name" dt:type="string" /> 
+<AttributeType name="color" dt:type="string" /> 
+<AttributeType name="style" dt:type="string" /> 
+<AttributeType name="xpos" dt:type="r8" /> 
+<AttributeType name="ypos" dt:type="r8" /> 
+<AttributeType name="heading" dt:type="i2" /> 
+<ElementType name="cookie" content="empty" model="open">
+<description>Describes a cookie to be loaded</description> 
+<attribute type="xpos" /> 
+<attribute type="ypos" /> 
+<attribute type="heading" /> 
+</ElementType>
+<ElementType name="mine" content="empty" model="open">
+<description>Describes a mine to be loaded</description> 
+<attribute type="xpos" /> 
+<attribute type="ypos" /> 
+<attribute type="heading" /> 
+</ElementType>
+<ElementType name="file" content="textOnly" model="open" dt:type="string">
+<description>An object's data file</description> 
+</ElementType>
+<ElementType name="robot" content="eltOnly" order="one" model="open">
+<description>Describes a robot to be loaded</description> 
+<attribute type="color" /> 
+<attribute type="style" /> 
+<attribute type="xpos" /> 
+<attribute type="ypos" /> 
+<attribute type="heading" /> 
+<element type="file" minOccurs="1" maxOccurs="1" /> 
+</ElementType>
+<!-- Allowed to have a team with no robots. This just creates an empty team 
+  --> 
+<ElementType name="team" content="eltOnly" model="open">
+<description>Describes a team of zero or more robots</description> 
+<attribute type="name" /> 
+<attribute type="color" /> 
+<!-- For now only robots can be in teams, but it would be reasonable to allow other object types in the future  
+  --> 
+<element type="robot" minOccurs="0" maxOccurs="*" /> 
+</ElementType>
+<ElementType name="match" content="eltOnly" order="many" model="open">
+<description>Describes the properties of a match to be created</description> 
+<AttributeType name="games" dt:type="ui4" /> 
+<AttributeType name="width" dt:type="ui2" /> 
+<AttributeType name="height" dt:type="ui2" /> 
+<AttributeType name="zerostartheading" dt:type="boolean" /> 
+<AttributeType name="newstartpos" dt:type="boolean" /> 
+<AttributeType name="startenergy" dt:type="ui4" /> 
+<AttributeType name="ceasefire" dt:type="ui4" /> 
+<attribute type="games" /> 
+<attribute type="width" /> 
+<attribute type="height" /> 
+<attribute type="zerostartheading" /> 
+<attribute type="newstartpos" /> 
+<attribute type="startenergy" /> 
+<attribute type="ceasefire" /> 
+<attribute type="name" /> 
+<attribute type="color" /> 
+<!-- Compatibility settings. The "compat" property sets the defaults for all the other values which may then be overridden by specific attributes. 
+  --> 
+<AttributeType name="compat" dt:type="enumeration" dt:values="1.3 1.4" /> 
+<AttributeType name="turnmode" dt:type="ui2" /> 
+<AttributeType name="radarrange" dt:type="i4" /> 
+<AttributeType name="missilerange" dt:type="i4" /> 
+<AttributeType name="allowsliding" dt:type="boolean" /> 
+<AttributeType name="fastmissiles" dt:type="boolean" /> 
+<AttributeType name="decelstops" dt:type="boolean" /> 
+<AttributeType name="updatedaccel" dt:type="boolean" /> 
+<AttributeType name="additiverotation" dt:type="boolean" /> 
+<AttributeType name="allowradio" dt:type="boolean" /> 
+<AttributeType name="timeout" dt:type="i4" /> 
+<AttributeType name="cmrate" dt:type="i4" /> 
+<attribute type="compat" /> 
+<attribute type="turnmode" /> 
+<attribute type="radarrange" /> 
+<attribute type="missilerange" /> 
+<attribute type="allowsliding" /> 
+<attribute type="fastmissiles" /> 
+<attribute type="decelstops" /> 
+<attribute type="updatedaccel" /> 
+<attribute type="additiverotation" /> 
+<attribute type="allowradio" /> 
+<attribute type="timeout" /> 
+<attribute type="cmrate" /> 
+<group minOccurs="1" maxOccurs="*">
+<element type="team" /> 
+<element type="robot" /> 
+</group>
+<element type="mine" /> 
+<element type="cookie" /> 
+</ElementType>
+</Schema>
