@@ -8,11 +8,18 @@
 using System;
 using System.IO;
 using System.Xml.Linq;
+using RobotBattle.Automation.Builder;
 
 namespace RobotBattle.Automation
 {
     public class RobotBuilder
     {
+        private RobotBuilder()
+        {
+        }
+
+        public Point? Position { get; set; }
+        public int? Heading { get; set; }
         public string FileName { get; private set; }
 
         public static RobotBuilder FromFile(string fileName)
@@ -28,7 +35,10 @@ namespace RobotBattle.Automation
         {
             return new XElement(
                 MatchBuilder.Namespace + "robot",
-                new XElement(MatchBuilder.Namespace + "file", FileName)
+                new XElement(MatchBuilder.Namespace + "file", FileName),
+                Position == null ? null : new XAttribute("xpos", Position.Value.X),
+                Position == null ? null : new XAttribute("ypos", Position.Value.Y),
+                Heading == null ? null : new XAttribute("heading", Heading)
                 );
         }
     }

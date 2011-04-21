@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder\Point.cs" />
     <Compile Include="Results\RobotGameStatistics.cs" />
     <Compile Include="Results\RobotResult.cs" />
     <Compile Include="Results\TeamResult.cs" />

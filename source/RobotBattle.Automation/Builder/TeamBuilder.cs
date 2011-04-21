@@ -20,6 +20,7 @@ namespace RobotBattle.Automation
             Robots = new Collection<RobotBuilder>();
         }
 
+        public string Name { get; set; }
         public ICollection<RobotBuilder> Robots { get; private set; }
 
         public XElement ToXml()
@@ -27,7 +28,8 @@ namespace RobotBattle.Automation
             return new XElement(
                 MatchBuilder.Namespace + "team",
                 from robot in Robots
-                select robot.ToXml()
+                select robot.ToXml(),
+                Name == null ? null : new XAttribute("name", Name)
                 );
         }
     }

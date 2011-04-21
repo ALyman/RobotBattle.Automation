@@ -17,11 +17,13 @@ namespace RobotBattle.Automation
 {
     public class MatchRunner
     {
+        private readonly bool hideWindow;
         private readonly MatchBuilder matchBuilder;
 
-        public MatchRunner(MatchBuilder matchBuilder)
+        public MatchRunner(MatchBuilder matchBuilder, bool hideWindow = true)
         {
             this.matchBuilder = matchBuilder;
+            this.hideWindow = hideWindow;
         }
 
         public Task<MatchResult> RunAsync()
@@ -41,40 +43,54 @@ namespace RobotBattle.Automation
                 matchBuilder.ToXml().WriteTo(writer);
             }
 
-            var desktopName = "RobotBattle.Automation." + Guid.NewGuid();
-            var desktopPtr = NativeMethods.CreateDesktop(desktopName, null, null, 0, 0xff, IntPtr.Zero);
-            try {
-                if (desktopPtr == IntPtr.Zero)
-                    throw new InvalidOperationException("Failed to create the secondary desktop");
 
-                // set startup parameters.
-                var si = new NativeMethods.StartupInfo();
-                si.cb = Marshal.SizeOf(si);
-                si.lpDesktop = desktopName;
+            if (hideWindow) {
+                var desktopName = "RobotBattle.Automation." + Guid.NewGuid();
+                var desktopPtr = NativeMethods.CreateDesktop(desktopName, null, null, 0, 0xff, IntPtr.Zero);
+                try {
+                    if (desktopPtr == IntPtr.Zero)
+                        throw new InvalidOperationException("Failed to create the secondary desktop");
 
-                var pi = new NativeMethods.ProcessInformation();
+                    // set startup parameters.
+                    var si = new NativeMethods.StartupInfo();
+                    si.cb = Marshal.SizeOf(si);
+                    si.lpDesktop = desktopName;
 
-                var path = string.Format(
-                    "\"{0}\" \"{1}\" /t /lf \"{2}\" /slf \"{3}\" /slg 1 /lo 1 /slo 1",
-                    robotBattleExePath,
-                    loadListFile,
-                    scoreLogFile,
-                    statsLogFile
-                    );
+                    var pi = new NativeMethods.ProcessInformation();
 
-                if (
-                    !NativeMethods.CreateProcess(null, path, IntPtr.Zero, IntPtr.Zero, true, /*NORMAL_PRIORITY_CLASS*/
-                                                 0x00000020, IntPtr.Zero, null, ref si, ref pi))
-                    throw new InvalidOperationException("Failed to launch the Robot Battle process");
+                    var path = string.Format(
+                        "\"{0}\" \"{1}\" /t /lf \"{2}\" /slf \"{3}\" /slg 1 /lo 1 /slo 1",
+                        robotBattleExePath,
+                        loadListFile,
+                        scoreLogFile,
+                        statsLogFile
+                        );
 
-                var process = Process.GetProcessById(pi.dwProcessId);
+                    if (
+                        !NativeMethods.CreateProcess(null, path, IntPtr.Zero, IntPtr.Zero, true,
+                                                     0x00000020, /*NORMAL_PRIORITY_CLASS*/
+                                                     IntPtr.Zero, null, ref si, ref pi))
+                        throw new InvalidOperationException("Failed to launch the Robot Battle process");
 
-                process.WaitForExit();
-
-                return MatchResult.FromFiles(loadListFile, scoreLogFile, statsLogFile);
-            } finally {
-                NativeMethods.CloseDesktop(desktopPtr);
+                    Process.GetProcessById(pi.dwProcessId)
+                        .WaitForExit();
+                } finally {
+                    NativeMethods.CloseDesktop(desktopPtr);
+                }
+            } else {
+                Process.Start(new ProcessStartInfo {
+                    FileName = robotBattleExePath,
+                    Arguments = string.Format(
+                        "\"{1}\" /t /lf \"{2}\" /slf \"{3}\" /slg 1 /lo 1 /slo 1",
+                        robotBattleExePath,
+                        loadListFile,
+                        scoreLogFile,
+                        statsLogFile
+                                  )
+                }).WaitForExit();
             }
+
+            return MatchResult.FromFiles(loadListFile, scoreLogFile, statsLogFile);
         }
 
         #region Nested type: NativeMethods
