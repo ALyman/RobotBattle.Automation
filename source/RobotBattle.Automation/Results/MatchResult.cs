@@ -66,16 +66,18 @@ namespace RobotBattle.Automation
                 teamLines = scoreLog.Take(Int32.Parse(GetCsvValue(scoreLog.Current, "____Teams"))).ToList();
             }
 
+            int id = 0;
+
             var robotsByName = (from robotLine in robotLines
-                                let split = robotLine.Split(',')
-                                select new RobotResult {
-                                    Name = split[0],
-                                    Version = split[1],
-                                    Author = split[2],
-                                    FileName = split[3],
-                                    TotalScore = Int32.Parse(split[4]),
-                                    Places = split.Skip(5).Select(Int32.Parse).ToArray()
-                                }).ToDictionary(r => r.Name);
+                                                            let split = robotLine.Split(',')
+                                                            select new RobotResult(id++) {
+                                                                Name = split[0],
+                                                                Version = split[1],
+                                                                Author = split[2],
+                                                                FileName = split[3],
+                                                                TotalScore = Int32.Parse(split[4]),
+                                                                Places = split.Skip(5).Select(Int32.Parse).ToArray()
+                                                            }).ToDictionary(r => r.Name);
 
             foreach (var teamLine in teamLines) {
                 var split = teamLine.Split(',');
@@ -124,8 +126,42 @@ namespace RobotBattle.Automation
                         Place = values["_place"],
                         TotalKillsToRobots = values["_killstorobots[*]"],
                         TotalKillsFromRobots = values["_killsfromrobots[*]"],
-                        // TODO: load additional statistics
+                        KillsFromMines = values["_killsfrommines[*]"],
+                        KillsFromWalls = values["_killsfromwalls[*]"],
+                        KillsFromErrors = values["_killsfromerrors[*]"],
+                        KillsFromMisc = values["_killsfrommisc[*]"],
+                        KillsFromTimeouts = values["_killsfromtimeouts[*]"],
+                        ShotsFired = values["_shotsfired[*]"],
+                        HitsToMines = values["_hitstomines[*]"],
+                        HitsToCookies = values["_hitstocookies[*]"],
+                        TotalHitsToRobots = values["_hitstorobots[*]"],
+                        TotalHitsFromRobots = values["_hitsfromrobots[*]"],
+                        AverageHitStrengthToRobots = values["_hitstrtorobots[*]"],
+                        TotalDamageToRobots = values["_dmgtorobots[*]"],
+                        TotalDamageFromRobots = values["_dmgfromrobots[*]"],
+                        TotalDamageFromMines = values["_dmgfrommines[*]"],
+                        TotalDamageFromWalls = values["_dmgfromwalls[*]"],
+                        TotalDamageFromJar = values["_dmgfromjar[*]"],
+                        TotalBonusFromCookies = values["_bonusfromcookies[*]"],
+                        TotalCollisionsWithRobots = values["_cldwithrobots[*]"],
+                        Points = values["_points[*]"]
                     };
+                    foreach (var otherRobot in robotsById) {
+                        stats.HitsToRobots[otherRobot.Value] =
+                            values[string.Format("_hitstorobots[*][{0}]", otherRobot.Key)];
+                        stats.HitsFromRobots[otherRobot.Value] =
+                            values[string.Format("_hitsfromrobots[*][{0}]", otherRobot.Key)];
+                        stats.KillsToRobots[otherRobot.Value] =
+                            values[string.Format("_killstorobots[*][{0}]", otherRobot.Key)];
+                        stats.KillsFromRobots[otherRobot.Value] =
+                            values[string.Format("_killsfromrobots[*][{0}]", otherRobot.Key)];
+                        stats.DamageToRobots[otherRobot.Value] =
+                            values[string.Format("_dmgtorobots[*][{0}]", otherRobot.Key)];
+                        stats.DamageFromRobots[otherRobot.Value] =
+                            values[string.Format("_dmgfromrobots[*][{0}]", otherRobot.Key)];
+                        stats.CollisionsWithRobots[otherRobot.Value] =
+                            values[string.Format("_cldwithrobots[*][{0}]", otherRobot.Key)];
+                    }
                     robot.Statistics.Add(stats);
                 }
             }

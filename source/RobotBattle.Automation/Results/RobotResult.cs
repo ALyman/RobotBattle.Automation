@@ -14,11 +14,13 @@ namespace RobotBattle.Automation
 {
     public class RobotResult
     {
-        public RobotResult()
+        public RobotResult(int id)
         {
+            Id = id;
             Statistics = new List<RobotGameStatistics>();
         }
 
+        public int Id { get; private set; }
         public string Author { get; set; }
         public string FileName { get; set; }
         public string Name { get; set; }
@@ -31,6 +33,7 @@ namespace RobotBattle.Automation
         {
             return new XElement(
                 MatchResult.Namespace + "robot",
+                new XAttribute("id", Id),
                 new XAttribute("name", Name),
                 new XAttribute("version", Version),
                 new XAttribute("author", Author),
